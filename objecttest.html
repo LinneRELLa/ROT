@@ -1,0 +1,701 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+	<title>
+		
+
+
+	</title>
+<link rel="stylesheet" type="text/css" href="testcss/Frame.css">
+<link rel="stylesheet" type="text/css" href="testcss/Animations.css">
+<script type="text/javascript">
+
+	/*获取ip，用于后端统计*/
+	function getip(){var xhttp;
+if (window.XMLHttpRequest) {
+    xhttp = new XMLHttpRequest();
+    } else {
+    // code for IE6, IE5
+     xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+}
+
+ /*2.请求目标网页和发送请求*/
+
+var QueryOption={
+
+	option:"getip"
+}
+jsonquery=JSON.stringify(QueryOption);
+xhttp.open("POST", "https://www.rellal.com/Anime/getid.php",true);
+
+xhttp.send(jsonquery); 
+
+
+ /*4.监听状态变化*/
+xhttp.onreadystatechange=function(){
+	/*
+0: 请求未初始化
+1: 服务器连接已建立
+2: 请求已接收
+3: 正在处理请求
+4: 请求已完成且响应已就绪
+	*/
+	if(xhttp.readyState==4){
+
+console.log(xhttp.responseText);
+
+
+}
+
+
+
+}
+}
+
+getip();
+
+
+var ByDay=0;
+var selected=0;
+/*ajax代码，别调用此函数！*/
+function Querysomething(qop,qid){
+
+
+		var xhttp;
+if (window.XMLHttpRequest) {
+    xhttp = new XMLHttpRequest();
+    } else {
+    // code for IE6, IE5
+     xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+}
+
+ /*2.请求目标网页和发送请求*/
+
+
+xhttp.open("GET", "https://www.rellal.com/Anime/query.php?option="+qop+"ID="+qid,true);
+xhttp.send(); 
+
+
+ /*4.监听状态变化*/
+xhttp.onreadystatechange=function(){
+	/*
+0: 请求未初始化
+1: 服务器连接已建立
+2: 请求已接收
+3: 正在处理请求
+4: 请求已完成且响应已就绪
+	*/
+	if(xhttp.readyState==4){
+
+return JSON.parse(xhttp.responseText);
+
+
+}
+
+
+
+
+
+}
+
+}
+
+
+
+
+
+
+function AllAnime(inobj){
+for(n in inobj){
+
+	this[n]=inobj[n];
+	
+}
+
+}
+/*将时间转化为分钟数*/
+function TimeToMinute(inputTime){
+return inputTime.split(":")[0]*60+inputTime.split(":")[1]*1;
+}
+
+function queryall() {
+/*ajax 请求php查询数据库*/
+	var xhttp;
+if (window.XMLHttpRequest) {
+    xhttp = new XMLHttpRequest();
+    } else {
+    // code for IE6, IE5
+     xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+}
+
+ /*2.请求目标网页和发送请求*/
+
+
+xhttp.open("GET", "https://www.rellal.com/Anime/query.php?option=allName",false);
+xhttp.send(); 
+
+return JSON.parse(xhttp.responseText);
+ /*4.监听状态变化*/
+xhttp.onreadystatechange=function(){
+	/*
+0: 请求未初始化
+1: 服务器连接已建立
+2: 请求已接收
+3: 正在处理请求
+4: 请求已完成且响应已就绪
+	*/
+	if(xhttp.readyState==4){
+
+console.log(1);
+
+
+}
+
+
+
+}
+	
+}
+var detail=[];
+
+/*查询具体信息,终于要写完了啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊*/
+function querydetail(inputrightnode){
+
+inputrightnode.onclick="";
+Back=document.createElement("div");
+Back.id="back";
+Back.innerHTML='返回';
+
+right1.appendChild(Back);
+detail.push(Back);
+Back.onclick=initialright;
+
+SelectDetailResult=document.createElement("div");
+SelectDetailResult.className="SelectDetailResult";
+
+detail.push(SelectDetailResult);
+right1.appendChild(SelectDetailResult);
+
+var QueryOption={
+
+	option:"Name,音乐,题材,作画,叙事节奏,伏笔细节",
+    ID:select.queryID
+}
+jsonquery=JSON.stringify(QueryOption);
+
+
+		var xhttp;
+if (window.XMLHttpRequest) {
+    xhttp = new XMLHttpRequest();
+    } else {
+    // code for IE6, IE5
+     xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+}
+
+ /*2.请求目标网页和发送请求*/
+
+
+xhttp.open("POST", "https://www.rellal.com/Anime/query.php",true);
+xhttp.setRequestHeader("Content-type", "application/json  charset=utf-8");
+xhttp.send(jsonquery); 
+
+
+ /*4.监听状态变化*/
+xhttp.onreadystatechange=function(){
+	/*
+0: 请求未初始化
+1: 服务器连接已建立
+2: 请求已接收
+3: 正在处理请求
+4: 请求已完成且响应已就绪
+	*/
+				if(xhttp.readyState==4){
+ DAYS=["一","二","三","四","五","六","日"];
+				Qdetailresult=JSON.parse(xhttp.responseText);
+SelectDetailResult.innerHTML=Qdetailresult["Name"];
+RELLA=document.createElement('div');
+RELLA.className="RELLA";
+upday=an[select.id].DAY==0?"日":DAYS[an[select.id].DAY-1];
+RELLA.innerHTML="每周"+upday+"<br>"+an[select.id].TIME+"<br>绝赞更新";
+
+
+canvas=onloaded();
+right1.appendChild(canvas);
+right1.appendChild(RELLA);
+detail.push(RELLA);
+detail.push(canvas);
+										}
+
+
+
+
+							}
+
+}
+
+</script>
+
+
+</head>
+<body style="">
+<div class="out">
+   <div class="top">
+   		<a href="p.php"><div class="innertag" >ROREL</div></a>
+   		<a href="p.php"><div class="innertag1" >去旧版</div></a>
+   </div>
+
+
+	<div class="left">
+		<input type="text" name="" id="search" autocomplete="off" id="search"
+		placeholder="搜索">
+		<div class="icon">按星期分类</div>
+
+
+
+
+<script type="text/javascript">
+/*通过右端选择展示区内容*/
+function Select(){
+
+
+selected=1;
+
+window.select = this;
+document.getElementsByClassName("innertag")[0].onclick=initialright;
+/*如果当前按星期分类显示，则需要特殊处理*/
+if (ByDay==1) {
+
+
+	right1.appendChild(window.select);
+	for (i in DayQueueRight) {
+		DayQueueRight[i].style.display="none";
+	}
+}
+window.select.style.animation="select 0.3s ease forwards";
+  
+
+
+	
+
+for (n in RightNodes) 
+{
+	if(this !=RightNodes[n]){
+
+
+		RightNodes[n].style.display="none";
+							
+							}
+	
+
+
+
+}
+
+
+querydetail(this);
+
+
+}
+
+
+
+
+
+
+/*用于消除select和leftselect的影响*/
+	function initialright(){
+
+selected=0;
+for (n in detail) {
+	detail[n].remove();
+}
+ 
+  window.select.style.animation="none";
+ window.select.onclick=Select;
+/*如果按时间分类显示，需要特殊处理*/
+if (ByDay==1) {
+for (i in DayQueueRight)
+{
+
+	DayQueueRight[i].style.display="block";
+}
+DayQueueRight[window.select.day-1].appendChild(window.select);
+
+}
+
+for (n in RightNodes) 
+{
+	
+
+if(select !=RightNodes[n]){
+		RightNodes[n].style.display="block";
+					
+						
+					}  
+
+
+
+}
+ select.parentNode.scrollIntoView();
+}
+
+/*左端默认加载模式以及左右端节点载入*/
+	left1=document.getElementsByClassName("left")[0];
+
+	var an=new AllAnime(queryall());
+var LeftNodes=[];
+var NodesByDay=[[],[],[],[],[],[],[]];
+
+	for (n in an){
+
+	
+		x=document.createElement("p");
+		x.image=document.createElement("img");
+		x.image.className="icon";
+		x.image.src=an[n]["图床"];
+		
+		x.className="leftnodes";
+		x.innerHTML=an[n].Name;
+
+		x.id=n;
+		
+	  x.onclick=leftselect;
+       left1.appendChild(x);
+
+
+LeftNodes.push(x);
+NodesByDay[an[n].DAY-1].push(x);
+
+
+
+	}
+	console.log(NodesByDay);
+
+
+
+
+	/*通过左端来选择展示区内容*/
+	function leftselect(){
+if (selected==1) {
+
+	initialright();
+}
+selected=1;
+
+
+window.select = RightNodes[this.id];
+console.log(select);
+document.getElementsByClassName("innertag")[0].onclick=initialright;
+
+if (ByDay==1) {
+for (i in DayQueueRight)
+{
+
+	DayQueueRight[i].style.display="none";
+}
+right1.appendChild(window.select);
+
+}
+
+
+window.select.style.display="block";
+window.select.style.animation="select 0.3s ease forwards";
+ 
+for (n in RightNodes) 
+{
+	if(select !=RightNodes[n]){
+
+
+		RightNodes[n].style.display="none";
+			RightNodes[n].style.animation="none";				
+							}
+	
+
+
+
+}
+
+
+
+querydetail(window.select);
+
+}
+
+/*切换至时间分类加载模式*/
+ 	document.getElementsByClassName('icon')[0].onclick=LeftInitialByDAY;
+ function LeftInitialByDAY()
+ {  ByDay=1;
+   this.style.background="rgba(0,0,0,0.3)";
+ 	this.onclick=LeftInitialByDefault;
+    DAYS=["一","二","三","四","五","六","日"]  
+    DayQueue=[];
+    DayQueueRight=[];
+    for(n in NodesByDay){
+    Daydiv=document.createElement('div');
+     
+
+
+     DaydivRight=document.createElement('div');
+if(selected==1){
+
+
+     DaydivRight.style.display="none";
+}
+      DaydivRight.style.position="relative";
+    /*内容填充*/
+     Title=document.createElement('p');
+      Title.innerHTML="周"+DAYS[n];
+
+     Title.style["text-align"]="center";
+    Daydiv.appendChild(Title);
+    DaydivRight.innerHTML="周"+DAYS[n];
+    DaydivRight.style.padding="30px 65px";
+    DaydivRight.style["font-size"]="25px";
+    DaydivRight.style.width="100%";
+    /*顶部时间轴*/
+   TopLine=document.createElement('hr');
+   TopLine.style.position="absolute";
+   TopLine.style.top="30px";
+      TopLine.style.left="226px";
+      TopLine.style.border="2px solid white";
+TopLine.style.width="500px";
+
+     var d= new Date();
+     var Today=d.getDay()==0?7:d.getDay();
+     if ((Today-1)==n) {
+     	   TopLine1=document.createElement('hr');
+   TopLine1.style.position="absolute";
+   TopLine1.style.top="30px";
+      TopLine1.style.left="226px";
+TopLine1.style.width=(d.getHours()*60+d.getMinutes())/(24*60)*500+"px";
+TopLine1.style.border="2px solid white ";
+ TopLine.style.border="2px dashed white";
+ 
+DaydivRight.appendChild(TopLine1);
+
+     }
+
+
+     DaydivRight.appendChild(TopLine);
+
+    left1.appendChild(Daydiv);
+
+    right1.appendChild(DaydivRight);
+
+
+
+
+
+    for(i in NodesByDay[n])
+    {
+Daydiv.appendChild(NodesByDay[n][i]);
+  NowNode=RightNodes[NodesByDay[n][i].id];
+  NowNode.style.left=8+208*(i%4)+"px";
+  NowNode.style.top=120+Math.floor(i/4)*252+"px";
+      if (selected!=1||select!=NowNode) {
+  DaydivRight.appendChild(NowNode);
+}
+  
+TopNode=document.createElement('div');
+TopNode.className="TopNode";
+TopNode.style.backgroundImage="url("+an[NodesByDay[n][i].id]["图床"]+")";
+TopNode.x1=(an[NodesByDay[n][i].id]["TIME"].split(":")[0]*60+an[NodesByDay[n][i].id]["TIME"].split(":")[1]*1)/(24*60)*500;
+TopNode.style.left=TopNode.x1+230+"px";
+TopNode.style.top=i%2*50+5+"px";
+
+var after=i%2?"TopNodeEven":"TopNodeOdd";
+TopNode.classList.add(after);
+
+  DaydivRight.appendChild(TopNode);
+
+
+
+
+    }
+  DaydivRight.style.height=80+Math.floor(i/4+1)*300+"px";
+   DayQueue.push(Daydiv);
+   DayQueueRight.push(DaydivRight);
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+DayQueueRight[Today-1].scrollIntoView();
+
+ }
+
+/*用于从星期分类改为默认加载*/
+ function LeftInitialByDefault(){
+this.style.background=""
+ 	ByDay=0;
+ 	this.onclick=LeftInitialByDAY;
+for (n in RightNodes) {
+	NowNode=RightNodes[n];
+    NowNode.style.left=NowNode.x+"px";
+     NowNode.style.top=NowNode.y+"px";
+      if (selected!=1||select!=NowNode) {
+
+right1.appendChild(NowNode);
+}
+}
+
+
+for (n in LeftNodes) {
+
+	left1.appendChild(LeftNodes[n]);
+    
+
+
+
+
+  
+	
+}
+for (n in DayQueue)
+{
+
+DayQueue[n].remove();
+
+}
+for (n in DayQueueRight){
+DayQueueRight[n].remove();
+
+}
+
+ }
+
+
+
+
+
+		console.log(an);
+		
+
+</script>
+	</div>
+
+<div class="detail"></div>
+	<div class="right">
+		<script type="text/javascript" src="leidatu.js"></script>
+		<script type="text/javascript">
+
+
+
+
+
+
+		function rightload(){
+
+
+			
+
+/*-------------加载右端内容--------------------------------------------------------*/
+			right1=document.getElementsByClassName("right")[0];
+			RightNodes=[];
+			console.log(RightNodes);
+
+
+/*
+var AnimationNode=new Array();
+		AnimationNode.push(document.getElementsByClassName("frontpage")[0]);
+        console.log(AnimationNode);
+        */
+
+for (n in an){
+
+	
+		rx=document.createElement("div");
+		rx.className="frontpage"
+
+	
+
+      rx.style.backgroundImage='url('+an[n]["图床"]+')';
+      
+      rx.day=an[n].DAY;
+      rx.queryID=an[n].ID;
+      right1.appendChild(rx);
+
+      rx.x=rx.offsetLeft;
+    rx.y=rx.offsetTop;
+rx.id=n;
+      rx.onclick=Select;
+
+RightNodes.push(rx);
+
+	}
+
+/*全部转为绝对定位*/
+for (n in RightNodes){
+RightNodes[n].style.position="absolute";
+RightNodes[n].style.left=RightNodes[n].x+'px';
+RightNodes[n].style.top=RightNodes[n].y+'px';
+
+}
+
+
+
+
+
+
+
+
+
+
+}
+rightload();
+
+	</script>
+
+<!-- /*搜索相关*/ -->
+<script type="text/javascript">
+	Search=document.getElementById("search");
+	window.onload=Search.oninput=function(){
+var reg=new RegExp(".*"+Search.value+".*");
+		for (n in an){
+			LeftNodes[n].style.display="";
+			RightNodes[n].style.opacity="";
+if (!reg.test(an[n]["Name"])) {
+LeftNodes[n].style.display="none";
+RightNodes[n].style.opacity="0.2";
+
+
+
+}
+
+
+		}
+	}
+document.getElementsByClassName("icon")[0].click();
+</script>
+
+
+
+
+
+
+
+
+	</div>
+
+
+
+
+</div>
+	<div style="width:100%;margin:0 auto; padding:20px 0;text-align: center;position:absolute;bottom:0;">
+		 		<a target="_blank" href="http://beian.miit.gov.cn" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="" style="float:left;"/><p style="display:inline-block;float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">赣ICP备2021003721号 </p></a>
+
+
+		 		<a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=36012102000312" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="" style="float:left;"/><p style="display:inline-block;float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">赣公网安备 36012102000312号</p></a>
+		 	</div>
+</body>
+</html>
