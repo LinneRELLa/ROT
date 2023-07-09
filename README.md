@@ -9,20 +9,4 @@ __因种子站被墙，下载番剧前需要在修改aria2/start.bat最后的--a
 ![image text](https://raw.githubusercontent.com/LinneRELLa/ROT/master/imgs/readme3.png)
 
 
-## Project setup
-```
-yarn install
-```
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
-
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
