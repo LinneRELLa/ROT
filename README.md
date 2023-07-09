@@ -7,6 +7,3 @@ __因种子站被墙，下载番剧前需要在修改aria2/start.bat最后的--a
 ![image text](https://raw.githubusercontent.com/LinneRELLa/ROT/master/imgs/readme1.png)
 ![image text](https://raw.githubusercontent.com/LinneRELLa/ROT/master/imgs/readme2.png)
 ![image text](https://raw.githubusercontent.com/LinneRELLa/ROT/master/imgs/readme3.png)
-
-
-
