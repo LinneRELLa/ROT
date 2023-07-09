@@ -8,7 +8,8 @@ module.exports = defineConfig({
            electronBuilder: {
         builderOptions: {
            extraResources: [
-                {from: './src/config', to: '../config'}
+                {from: './src/config', to: '../config'},
+                {from: './src/aria2', to: '../aria2'}
             ]
         }
     }},

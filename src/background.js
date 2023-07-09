@@ -5,6 +5,52 @@ import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
+
+const {  execFile,spawn } = require('child_process');
+
+/*开启aira2*/
+function startengine(){
+console.log(process)
+console.log(spawn);
+const path = require('path');
+const a2path=path.join(__dirname,'../../aria2')
+console.log(`cd /d ${a2path} & start.bat`)
+
+const child = spawn('cmd.exe', ['/c', `cd /d ${a2path} & start.bat`]);
+child.stdout.on('data', (data) => {
+  console.log(`输出：${data}`);
+});
+
+child.stderr.on('data', (data) => {
+  console.error(`错误：${data}`);
+});
+
+child.on('close', (code) => {
+  console.log(`子进程退出码：${code}`);
+});
+}
+/*           */
+/*child.kill(); windows环境下结束进程*/
+function killtask(FileName){
+
+
+const killarg=spawn('cmd.exe',['/c', `chcp 65001 & TASKKILL /F /IM ${FileName}`]);
+
+killarg.stdout.on('data', (data) => {
+  console.log(`输出：${data}`);
+});
+
+killarg.stderr.on('data', (data) => {
+  console.error(`错误：${data}`);
+});
+
+killarg.on('close', (code) => {
+  console.log(`子进程退出码：kill:${code}`);
+});
+}
+
+/*        -------------            */
+
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } }
@@ -48,6 +94,7 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
+
   if (BrowserWindow.getAllWindows().length === 0) createWindow()
 })
 
@@ -63,7 +110,8 @@ app.on('ready', async () => {
       console.error('Vue Devtools failed to install:', e.toString())
     }
   }*/
-  createWindow()
+  startengine();
+  createWindow();
 })
 
 // Exit cleanly on request from parent process in development mode.
@@ -80,3 +128,22 @@ if (isDevelopment) {
     })
   }
 }
+
+
+app.on('before-quit', async function () {
+
+  await killtask('aria2c.exe');
+})
+
+
+
+
+
+app.on('window-all-closed', function () {
+
+  if (process.platform !== 'darwin') app.quit()
+})
+
+
+
+

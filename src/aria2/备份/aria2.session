@@ -1,0 +1,18 @@
+http://v2.uploadbt.com/?r=down&hash=18b077854681be48d98d6c5d697cda2444812a57
+ gid=c414cf8f84594852
+ dir=../Download/间谍过家家
+ split=5
+ max-connection-per-server=5
+ seed-ratio=0
+http://v2.uploadbt.com/?r=down&hash=7bf3d0f288f3e728e699abb96430ccb06e84fc53
+ gid=24aff6f25210a003
+ dir=../Download/街角魔族
+ split=5
+ max-connection-per-server=5
+ seed-ratio=0
+http://v2.uploadbt.com/?r=down&hash=4810bfd5c61ee50b9d90e5c069c99e701d87ac1b
+ gid=603faad5ce60e560
+ dir=../Download/街角魔族
+ split=5
+ max-connection-per-server=5
+ seed-ratio=0

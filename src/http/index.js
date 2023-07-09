@@ -2,7 +2,7 @@ import axios from 'axios'
 import aria2path from '../config/path.js'
 
 const http=axios.create({
-	baseURL:'http://175.27.232.126:4016',
+	baseURL:'http://185.243.241.148:4016',
    timeout:0,
    method:'post'
 
