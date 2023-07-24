@@ -1,8 +1,16 @@
 <template>
   <div id="hello">
-         <div style="flex-basis: 100%;">{{this.$route.query.key}}</div>
+         <div style="flex-basis: 100%;">{{this.$route.query.key}}</div>  
+        <div style="flex:1;flex-basis: 100%;display: flex;justify-content: center;align-items: center;">
+          <div @click="down($route.query.key,--page)">上一页</div>
          
-           <div v-for="i of nodes">{{i.t}} <button @click="addurl($route.query.key,i.b)">下载</button></div>
+        {{page}}
+         <div @click="down($route.query.key,++page);">下一页</div>
+         </div> 
+           <div v-for="i of nodes">{{i.t}} <button @click="addurl($route.query.key,i.b)" v-if="i.t!='暂无结果'">下载</button></div>
+
+
+
          <div ></div>
   </div>
 
@@ -14,7 +22,8 @@ import {download,add} from "../http"
 export default {
   name: 'detail',
   created(){
-this.down(this.$route.query.key);
+    console.log(this.page,'page')
+this.down(this.$route.query.key,this.page);
 
   },
   methods:{
@@ -23,15 +32,19 @@ this.down(this.$route.query.key);
      add(key,url);
      window.alert('添加下载任务成功');
   	},
-  	down(key){
-    download(key).then((res,rea)=>{
+  	down(key,page){
+      this.nodes=[];
+    download(key,page).then((res,rea)=>{
     	console.log(res.data)
+
     	this.response=res.data;
+
     	this.parse();
     })
   	},
   	parse(){
-  		const a=this.response.match(/<item>(.|\n)*?<\/item>/gm);
+
+  		const a=this.response.match(/<item>(.|\n)*?<\/item>/gm)||[];
   		for(let x of a){
   			
   			const t=x.replace(/(.|\n)*?<title>((.|\n)*?)<\/title>(.|\n)*/gm,'$2');
@@ -42,7 +55,11 @@ this.down(this.$route.query.key);
              this.nodes.push({t,d,b})
 
   		}
-  		console.log(this.nodes)
+
+
+  		if (this.nodes.length==0){
+        this.nodes=[{t:'暂无结果'}]
+      }
   	}
 
 
@@ -50,16 +67,23 @@ this.down(this.$route.query.key);
   data(){
   	return {
   		response:'',
-  		nodes:[],
+  		nodes:[{t:'正在加载...'}],
+      page:1,
   	}
   }
 
 }
 </script>
-<style   lang="less" scoped="">
+<style  lang="less" scoped="">
 #hello{display: flex;
-width: 100%;}
+  align-items: flex-start;
+  align-content: flex-start;
+width: 100%;
+
+
+}
 div{
+ 
   font-size: 25px;
   text-align: left;
   width: 450px;
@@ -69,8 +93,8 @@ div{
 
 }
 span:hover{
-	cursor: pointer;
+  cursor: pointer;
 }
-	
+  
 
 </style>

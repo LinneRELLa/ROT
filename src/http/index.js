@@ -56,9 +56,10 @@ const normal=()=>{return http({
 	url:'/api/iniInfo'
 })}  
 
-const download=(key)=>{
+const download=(key,page)=>{
+  console.log(`/page/${page}.xml?term=${key}`);
   return downurl({
-   url:`/1.xml?term=${key}`
+   url:`/page/${page}.xml?term=${key}`
 
   })
 }
