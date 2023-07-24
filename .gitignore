@@ -3,7 +3,7 @@ node_modules
 /dist
 /dist_electron
 /api
-
+/aria2
 # local env files
 .env.local
 .env.*.local
