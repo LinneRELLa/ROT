@@ -334,11 +334,7 @@ Rdnd(){
   methods:{ 
     openAria2(){
       console.log(this)
-if(this.aria2.status.match(/信息: 没有运行的任务匹配指定标准。/)){
-  proc.exec('cd '+ `"${path.resolve('./public/aria2/')}"`+'&aria2c.exe --conf-path=aria2.conf',{ encoding: 'buffer' },(err,res)=>{
-  console.log(err,res)
-})
-}
+
 
 },
     closeEngine(){
@@ -370,7 +366,7 @@ setTimeout(() => {
     ,
     tst(x){
 
-      const p=path.resolve(publicpath,x.dir)
+      const p=path.resolve(__dirname,'../../Download',x.dir)
      
 
 
@@ -384,7 +380,7 @@ proc.exec('explorer '+`"${p}"`,(err,res)=>{
     },
     Post(){
 
-if(this.newTask.match(/^magnet:\?xt=urn:btih:[0-9a-fA-F]{40,}.*$/)){
+if(1){
 
 this.ws.send(JSON.stringify(
     {'jsonrpc':'2.0', 

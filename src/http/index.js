@@ -42,6 +42,15 @@ config.headers.axios=true;
     }
 
 	)*/
+const zhoushan=axios.create({
+  baseURL:'http://sgpt.slj.jinhua.gov.cn:9897/apistatistic/screen/getBillboardLis',
+  method:'get',
+})
+
+
+
+
+
 
 const normal=()=>{return http({
 	url:'/api/iniInfo'

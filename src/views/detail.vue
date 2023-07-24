@@ -2,7 +2,7 @@
   <div id="hello">
          <div style="flex-basis: 100%;">{{this.$route.query.key}}</div>
          
-           <div v-for="i of nodes">{{i.t}} <button @click="addurl($route.query.key,i.l)">下载</button></div>
+           <div v-for="i of nodes">{{i.t}} <button @click="addurl($route.query.key,i.b)">下载</button></div>
          <div ></div>
   </div>
 
@@ -36,8 +36,10 @@ this.down(this.$route.query.key);
   			
   			const t=x.replace(/(.|\n)*?<title>((.|\n)*?)<\/title>(.|\n)*/gm,'$2');
   		    const d=x.replace(/(.|\n)*?<description>((.|\n)*?)<\/description>(.|\n)*/gm,'$2');
+        
   		    const l=x.replace(/(.|\n)*?<enclosure url="((.|\n)*?)"(.|\n)*\/>(.|\n)*/gm,'$2');
-             this.nodes.push({t,d,l})
+        const b=l.replace(/acg.rip/,'tv.rellal.com:9099/acg')
+             this.nodes.push({t,d,b})
 
   		}
   		console.log(this.nodes)
