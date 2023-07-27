@@ -2,14 +2,14 @@ import axios from 'axios'
 import aria2path from '../config/path.js'
 
 const http=axios.create({
-	baseURL:'http://185.243.241.148:4016',
+	baseURL:'http://185.243.241.36:4016',
    timeout:0,
    method:'post'
 
 })
 
 const downurl=axios.create({
-  baseURL:'https://www.rellal.com:9099/acg',
+  baseURL:'https://tv.rellal.com:9099/acg',
    timeout:0,
    method:'get'
 
@@ -42,10 +42,7 @@ config.headers.axios=true;
     }
 
 	)*/
-const zhoushan=axios.create({
-  baseURL:'http://sgpt.slj.jinhua.gov.cn:9897/apistatistic/screen/getBillboardLis',
-  method:'get',
-})
+
 
 
 

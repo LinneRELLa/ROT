@@ -166,12 +166,9 @@ const proc = window.require('child_process');
 
 const path = window.require('path');
 
-const orpath=fs.readFileSync(path.join(__dirname,'../../config/path.js'),{ encoding: 'utf-8' })
+const publicpath=path.join(__dirname,'../../aria2');
 
-const configpath=orpath.match(/const aria2path=`(.*)`/)
- console.log(__dirname)
 
-const publicpath=configpath[1]
 
 	const Process=()=>import('../components/Process');
  
