@@ -1,17 +1,73 @@
 <template>
   <div id="app">
+      <div id="top">
+
+      <div class="minimize" @click="minimize">一</div>
+    <div class="close" @click="closewin">X</div>
+      
+  </div> 
+  <div class="down">
     <div id="navload">
+
+
+
     </div>
+    
     <div id="nav">
       <router-link to="/" active-class="active-icon" class="link">首页</router-link> 
       <router-link to="/Message" active-class="active-icon" class="link">下载详情</router-link>
       <router-link to="/detail" active-class="active-icon" class="link">番剧详情</router-link>
     </div>
+    <div class="cont"></div>
     <router-view/>
   </div>
+  </div>
 </template>
+<script type="text/javascript">
+  
+export default{
 
+
+
+
+
+
+  methods:{
+      minimize(){
+
+this.$electron.ipcRenderer.send('window-min');
+  },
+closewin () {
+  console.log('window-close');
+     this.$electron.ipcRenderer.send('window-close');
+}
+  ,
+  }
+}
+
+
+
+</script>
+<style lang="less">
+  body,html{
+  padding: 0 ;
+  margin: 0;
+   &::-webkit-scrollbar { display: none; /* Chrome Safari */}
+
+
+}
+</style>
 <style lang="less" scoped="">
+    #root #top{height:42px;width:100%;
+      color: white;
+      background:rgb(237,238,242);
+
+          overflow: hidden;
+      img{float: left;}
+    
+
+}
+
 a{
 text-decoration: none;
 
@@ -29,8 +85,8 @@ margin:10px 10px;
 }
 #app {
   display: flex;
-
-  
+  flex-direction:column;
+    
   #nav{
     text-align: center;
    
@@ -46,8 +102,7 @@ position: fixed;
   background:rgba(100,100,100,0.6);
   border-radius: 6px;
 }
-body,html{
-}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -70,4 +125,20 @@ nav {
     }
   }
 }
+#top{
+  display: flex;
+  flex-direction: columns;
+  justify-content: flex-end;
+  gap:4px;
+  align-items:center;
+  position:fixed;
+  width:100%;
+  background:rgb(36,40,47);
+  border-bottom:1px solid rgba(255,255,255,0.1);
+ -webkit-app-region: drag;
+ height: 31px;
+  z-index:90;
+  div{cursor: pointer;}
+}
+.down{display: flex;flex-direction: columns;position: relative;top: 31px;}
 </style>
