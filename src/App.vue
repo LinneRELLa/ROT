@@ -1,10 +1,11 @@
 <template>
   <div id="app">
       <div id="top">
-
+<div class="left"></div>
+<div class="right">
       <div class="minimize" @click="minimize">一</div>
     <div class="close" @click="closewin">X</div>
-      
+  </div>    
   </div> 
   <div class="down">
     <div id="navload">
@@ -127,18 +128,22 @@ nav {
 }
 #top{
   display: flex;
-  flex-direction: columns;
-  justify-content: flex-end;
+
+   justify-content: space-around;
   gap:4px;
   align-items:center;
   position:fixed;
   width:100%;
   background:rgb(36,40,47);
   border-bottom:1px solid rgba(255,255,255,0.1);
- -webkit-app-region: drag;
+
  height: 31px;
   z-index:90;
-  div{cursor: pointer;}
+  .left{flex:1;height: 31px; -webkit-app-region: drag;}
+  .right{
+    display:flex;
+  div{cursor: pointer;z-index: 99;padding-right: 15px;}
+}
 }
 .down{display: flex;flex-direction: columns;position: relative;top: 31px;}
 </style>
