@@ -49,8 +49,9 @@ config.headers.axios=true;
 
 
 
-const normal=()=>{return http({
-	url:'/api/iniInfo'
+const normal=(data)=>{return http({
+	url:'/api/iniInfo',
+  data,
 })}  
 
 const download=(key,page)=>{
