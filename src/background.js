@@ -13,16 +13,26 @@ function startengine(){
 console.log(process)
 console.log(spawn);
 const path = require('path');
-const a2path=path.join(__dirname,'../../aria2')
+let a2path;
+if(process.env.NODE_ENV=='development'){
+ a2path=path.join(__dirname,'../src/aria2')
+ console.log(__dirname)
+}
+else{
+  a2path=path.join(__dirname,'../../aria2')
+}
 console.log(`cd /d ${a2path} & start.bat`)
 
 const child = spawn('cmd.exe', ['/c', `cd /d ${a2path} & start.bat`]);
+
 child.stdout.on('data', (data) => {
   console.log(`输出：${data}`);
 });
 
 child.stderr.on('data', (data) => {
   console.error(`错误：${data}`);
+
+  
 });
 
 child.on('close', (code) => {

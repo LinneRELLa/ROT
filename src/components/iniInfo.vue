@@ -1,18 +1,20 @@
 <template>
-  <div class="hello">
+  <div class="hello" :style="`background-image: url(${this.bkg});`">
+    <div class="mask">
     <div class="top">
   <div class="change" :class="{able:this.done}" @click="change(-3)"><</div><div class="jidu">当前季度:{{this.jidu}}</div><div class="change" :class="{able:this.done}" @click="change(3)">></div>
   </div>
     <div v-for="x of this.info" style="overflow: hidden;display: flex;flex-wrap: wrap;" class="ava">
       <div class="hr"><div class="xingqi">{{xingqi[x.day]}}     </div><hr/> </div>
-      <div v-for="i of x.children"  class="normal">
-       <router-link :to="`detail?key=${i['关键字']}`"> <div :style="`background-image:url(${i['图床']})`" class="font"></div> </router-link>
+      <div v-for="i of x.children"  class="normal" @mousemove="GetBKG(i['图床'])">
+       <router-link :to="`detail?key=${i['关键字']}`" > <div :style="`background-image:url(${i['图床']})`" class="font" ></div> </router-link>
         {{i.Name}}
 
       </div>
 
       <br>
       
+    </div>
     </div>
   </div>
 </template>
@@ -21,6 +23,10 @@
   import {normal} from "../http";
 export default {
   methods:{
+    GetBKG(bkg){
+      this.bkg=bkg;
+this.$store.commit('getbkg',bkg)
+    },
 change(x){
   if(this.done){
   const number=Number(this.jidu);
@@ -96,10 +102,21 @@ this.load()();
 
        
   },
+  computed:{
+   
+   activeBkg(){
+
+  console.log(this.$store.state.bkg,'state')
+    return this.$store.state.bkg},
+
+  },
   data(){
 
 
-return {info:[],
+return {
+
+   bkg:'',
+  info:[],
 done:true,
 xingqi:['x','周一','周二','周三','周四','周五','周六','周日'],
 jidu:'获取中',
@@ -125,6 +142,18 @@ jidu:'获取中',
 .hello{
   color:white;
     background: rgba(36,40,47,1);
+    background-size: auto 100%;
+    animation: bkg 10s ease 0s infinite alternate;
+    .mask{
+      background:rgba(0,0, 0, 0.2);
+        backdrop-filter: blur(6px);
+    }
+}
+
+@keyframes bkg{
+  0%{background-position: 50% 0;}
+  50%{background-position: 50% -5px;}
+  100%{background-position: 50% 5px;}
 }
 
 

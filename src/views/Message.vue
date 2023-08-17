@@ -165,8 +165,15 @@ const fs = window.require('fs');
 const proc = window.require('child_process');
 
 const path = window.require('path');
+let publicpath;
+if(process.env.NODE_ENV=='development'){
+ publicpath=path.join(__dirname,'../../../../../../src/aria2')
+ console.log(__dirname);
+}
+else{
+ publicpath=path.join(__dirname,'../../aria2')
+}
 
-const publicpath=path.join(__dirname,'../../aria2');
 
 
 
