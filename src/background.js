@@ -7,7 +7,9 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 const { ipcMain } = require('electron')
 
 const {  execFile,spawn } = require('child_process');
-
+const Store = require('electron-store');
+ 
+const  store = new Store();
 /*开启aira2*/
 function startengine(){
 console.log(process)
@@ -169,3 +171,14 @@ app.on('window-all-closed', function () {
 
   if (process.platform !== 'darwin') app.quit()
 })
+
+  ipcMain.on('setstore',function (k,v){
+
+store.set(v.key,v.des)
+console.log(store.get(v.key),v.key)
+ })
+
+ipcMain.handle("getstore", async (event, arg) => {
+  return store.get(arg);
+
+});

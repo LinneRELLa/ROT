@@ -10,7 +10,14 @@ module.exports = defineConfig({
            extraResources: [
                 {from: './src/config', to: '../config'},
                 {from: './src/aria2', to: '../aria2'}
-            ]
+            ],
+            "nsis": {
+      // 关闭了一键集成，因此会走 下一步、下一步、下一步... 进行安装
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "deleteAppDataOnUninstall": false
+    },
         }
     }},
   configureWebpack: {

@@ -105,14 +105,15 @@ position: fixed;
 }
 
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+ font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color:white;
     background: rgba(36,40,47,1);
- min-height: 1200px;
+ min-height: 100vh;
 }
+
 nav {
   padding: 30px;
 
@@ -145,5 +146,8 @@ nav {
   div{cursor: pointer;z-index: 99;padding-right: 15px;}
 }
 }
-.down{display: flex;flex-direction: columns;position: relative;top: 31px;}
+.down{display: flex;flex-direction: columns;margin-top: 31px;
+
+
+}
 </style>

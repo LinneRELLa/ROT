@@ -1,4 +1,6 @@
 # 介绍
+
+开发请使用yarn electro:serve命令
 新番下载工具，基于aira2和miobt，acgrip等种子站，目前仅在windows进行了测试
 下载番剧时会根据番剧名称自动创建文件夹
 ![image text](https://raw.githubusercontent.com/LinneRELLa/ROT/master/imgs/readme4.png)
