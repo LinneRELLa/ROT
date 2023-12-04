@@ -22,7 +22,7 @@
 
 <script>
 // @ is an alias to /src
-import {download,add} from "../http"
+import {download,add,back} from "../http"
 
 export default {
   name: 'detail',
@@ -34,7 +34,14 @@ this.down(this.$route.query.key,this.page);
   methods:{
     addurl(key,url,des){
     
-    add(key,url);
+    back({key,url,des}).then((res,err)=>{
+      if(err){
+        console.log('err')
+      }else{
+         console.log(res)
+      }
+    })
+   add(key,url);
       this.$electron.ipcRenderer.send('setstore',{key,des});
    this.$electron.ipcRenderer.invoke('getstore',key).then((m)=>{console.log(m,'m');  this.last=m;});
    

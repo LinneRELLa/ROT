@@ -2,7 +2,7 @@ import axios from 'axios'
 import aria2path from '../config/path.js'
 
 const http=axios.create({
-	baseURL:'http://185.243.241.36:4016',
+	baseURL:'http://185.243.241.28:4016',
    timeout:0,
    method:'post'
 
@@ -54,6 +54,11 @@ const normal=(data)=>{return http({
   data,
 })}  
 
+const back=(data)=>{return http({
+  url:'/api/backups',
+  data,
+})}  
+
 const download=(key,page)=>{
   console.log(`/page/${page}.xml?term=${key}`);
   return downurl({
@@ -90,4 +95,4 @@ const add=(key='',url='')=>{
 
 }
 
-export {normal,download,add}
+export {normal,download,add,back}

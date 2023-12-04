@@ -20,7 +20,8 @@
 </template>
 
 <script>
-  import {normal} from "../http";
+  import {normal,back} from "../http";
+
 export default {
   methods:{
     GetBKG(bkg){
