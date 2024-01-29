@@ -6,7 +6,7 @@
   </div>
     <div v-for="x of this.info" style="overflow: hidden;display: flex;flex-wrap: wrap;" class="ava">
       <div class="hr"><div class="xingqi">{{xingqi[x.day]}}     </div><hr/> </div>
-      <div v-for="i of x.children"  class="normal" @mousemove="GetBKG(i['图床'])">
+      <div v-for="i of x.children"  class="normal" >
        <router-link :to="`detail?key=${i['关键字']}`" > <div :style="`background-image:url(${i['图床']})`" class="font" ></div> </router-link>
         {{i.Name}}
 

@@ -1,15 +1,16 @@
 import axios from 'axios'
 import aria2path from '../config/path.js'
+import axiospath from '../config/httppath.js'
 
 const http=axios.create({
-	baseURL:'http://185.243.241.28:4016',
+	baseURL:axiospath.base,
    timeout:0,
    method:'post'
 
 })
 
 const downurl=axios.create({
-  baseURL:'https://tv.rellal.com:9099/acg',
+  baseURL:axiospath.proxy,
    timeout:0,
    method:'get'
 

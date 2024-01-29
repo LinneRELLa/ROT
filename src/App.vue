@@ -15,9 +15,9 @@
     </div>
     
     <div id="nav">
-      <router-link to="/" active-class="active-icon" class="link">首页</router-link> 
+      <router-link to="/home" active-class="active-icon" class="link">首页</router-link> 
       <router-link to="/Message" active-class="active-icon" class="link">下载详情</router-link>
-      <router-link to="/detail" active-class="active-icon" class="link">番剧详情</router-link>
+      <router-link to="/detail" active-class="active-icon" class="link" v-show="this.$route.name=='detail'">番剧详情</router-link>
     </div>
     <div class="cont"></div>
     <router-view/>
@@ -147,7 +147,7 @@ nav {
 }
 }
 .down{display: flex;flex-direction: columns;margin-top: 31px;
-
+   min-height: calc(100vh - 31px);
 
 }
 </style>
