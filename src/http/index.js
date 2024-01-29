@@ -1,16 +1,27 @@
 import axios from 'axios'
 import aria2path from '../config/path.js'
 import axiospath from '../config/httppath.js'
+const path = window.require('path');
+const fs = window.require('fs');
+let publicpath
+if (process.env.NODE_ENV == 'development') {
+    publicpath = path.join(__dirname, '../../../../../../src/config/httppath.json')
+    console.log(__dirname);
+} else {
+    publicpath = path.join(__dirname, '../../config/httppath.json')
+}
 
+let res=JSON.parse(fs.readFileSync(publicpath, 'utf-8'));
+console.log(res,'res');
 const http=axios.create({
-	baseURL:axiospath.base,
+	baseURL:res.base,
    timeout:0,
    method:'post'
 
 })
 
 const downurl=axios.create({
-  baseURL:axiospath.proxy,
+  baseURL:res.proxy,
    timeout:0,
    method:'get'
 
