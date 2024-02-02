@@ -78,12 +78,12 @@ const download=(key,page)=>{
 
   })
 }
-const add=(key='',url='')=>{
+const add=(key='',url='',path)=>{
   console.log(JSON.stringify(
     {'jsonrpc':'2.0', 
     'method':'aria2.addUri', 
     'params':[[url],{
-    'dir':`../Download/${key}`,}],
+    'dir':path?path:`../Download/${key}`,}],
   'id':'add',
   },
    
@@ -94,7 +94,7 @@ const add=(key='',url='')=>{
     {'jsonrpc':'2.0', 
     'method':'aria2.addUri', 
     'params':[[url],{
-    'dir':`../Download/${key}`,}],
+    'dir':path?path:`../Download/${key}`,}],
     
     'id':'add',
   },

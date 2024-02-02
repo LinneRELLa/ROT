@@ -10,7 +10,9 @@
                 <div style="font-weight: 400;width: 100%;text-align: center;margin: 20px 0;">添加链接或口令</div>
                 <textarea v-model="newTask" class="textarea" rows="8"></textarea>
                 <p style="font-size: 10px;">下载到:</p>
-                <div class="outin"><input class="input"></div>
+                <div class="outin"><input class="input" v-model="path" placeholder="下载目录（默认为当前目录下Download文件夹）">
+                    <el-button slot="append" icon="el-icon-folder-opened" @click="openFile"></el-button>
+                </div>
                 <div :class="Rdnd" @click='Post'>立即下载</div>
             </div>
             <div id="mask" v-if="todel||newTask!=null" @click="back()"></div>
@@ -131,6 +133,7 @@ export default {
     },
     data() {
         return {
+            path: undefined,
             data: 'sth to send',
             todel: null,
             newTask: null,
@@ -215,6 +218,14 @@ export default {
         }
     },
     methods: {
+        openFile() {
+            this.$electron.ipcRenderer.invoke('selectpath', this.$route.query.key).then((m) => {
+                if (m[0]) {
+                    this.path = m[0];
+                }
+                console.log(m, 'm');
+            });
+        },
         openAria2() {
             console.log(this)
         },
@@ -338,7 +349,7 @@ export default {
     destroyed() {}
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
 #msg {
     #Aria2status {
         position: absolute;
@@ -494,7 +505,7 @@ export default {
     border: 1px solid rgb(230, 230, 230);
     border-radius: 3px;
     height: 36px;
-    padding-left: 50px;
+    padding-left: 20px;
     padding-right: 20px;
 }
 
@@ -520,9 +531,10 @@ input:focus {
 
 .outin {
     width: 100%;
+    display: flex;
 }
 
-.outin::before {
+/*.outin::before {
     content: "电脑";
     display: inline-block;
     width: 40px;
@@ -530,7 +542,7 @@ input:focus {
     line-height: 40px;
     position: absolute;
     left: 40px;
-}
+}*/
 
 .Rdnd {
     height: 44px;
