@@ -1,6 +1,9 @@
 const { defineConfig } = require('@vue/cli-service')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-
+const path = require('path')
+function resolve(dir) {
+    return path.join(__dirname, dir)
+}
 module.exports = defineConfig({
     transpileDependencies: true,
     publicPath: '/',
@@ -30,6 +33,12 @@ module.exports = defineConfig({
     },
     configureWebpack: {
         plugins: [new CopyWebpackPlugin({ patterns: [{ from: './src/config' }] })],
+        resolve: {
+            alias: {
+                // 设置@/的意义
+                '@@': resolve('public')
+            }
+        }
     },
     devServer: {
         proxy: {

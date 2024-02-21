@@ -24,7 +24,7 @@ function sendUpdateMessage(message, data) {
 }
 // 检查更新
 function checkForUpdates() {
-      sendUpdateMessage("start", '检测更新');
+  sendUpdateMessage("当前版本:", app.getVersion());
   // 设置更新服务器的地址, 其实就是一个静态文件服务器地址
   autoUpdater.setFeedURL(feedUrl);
 

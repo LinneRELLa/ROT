@@ -1,7 +1,8 @@
 <template>
     <div id="app">
         <div id="top">
-            <div class="left">{{mes}}</div>
+            <div class="left"><img src="@@/Xlogo2.png" style="height: 100%;position: absolute;left: 10px;
+            ">{{mes}}</div>
             <div class="right">
                 <div class="minimize" @click="minimize">一</div>
                 <div class="close" @click="closewin">X</div>
@@ -155,6 +156,9 @@ nav {
         flex: 1;
         height: 31px;
         -webkit-app-region: drag;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .right {
