@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <div id="top">
-            <div class="left"></div>
+            <div class="left">{{mes}}</div>
             <div class="right">
                 <div class="minimize" @click="minimize">一</div>
                 <div class="close" @click="closewin">X</div>
@@ -22,6 +22,11 @@
 </template>
 <script type="text/javascript">
 export default {
+    data(){
+      return {
+        mes:'',
+      }
+    },
     methods: {
         minimize() {
             this.$electron.ipcRenderer.send('window-min');
@@ -30,7 +35,23 @@ export default {
             console.log('window-close');
             this.$electron.ipcRenderer.send('window-close');
         },
-    }
+    },
+    mounted() {
+        const _this=this;
+        this.$electron.ipcRenderer.on("message", (event, { message, data }) => {
+            console.log(message, data,'updt');
+            if (message == 'isUpdateNow') {
+                if (confirm("现在更新？")) {
+                    this.$electron.ipcRenderer.send("updateNow");
+                }
+            }
+            else{
+            _this.mes=message+data;
+            }
+        });
+
+    },
+
 }
 </script>
 <style lang="less">

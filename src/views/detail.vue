@@ -236,7 +236,7 @@ span:hover {
     top: 50%;
     transform: translate(-50%, -50%);
     width: 500px;
-    height: 413px;
+ 
     background: rgba(48,56,65, 1);
     z-index: 4;
     border-radius: 3px;
@@ -352,7 +352,7 @@ span:hover {
 }
 
 .textarea {
-    width: 100%;
+    width: calc(100% - 8px);
     border: 1px solid rgb(230, 230, 230);
     border-radius: 3px;
     color: white;

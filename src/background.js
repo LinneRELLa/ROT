@@ -1,5 +1,6 @@
 'use strict'
-import { app, protocol, BrowserWindow } from 'electron'
+import { app, protocol, BrowserWindow }  from 'electron'
+import { autoUpdater } from "electron-updater";
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
@@ -8,6 +9,61 @@ const { dialog } = require('electron');
 const { execFile, spawn } = require('child_process');
 const Store = require('electron-store');
 const store = new Store();
+/*自动更新*/
+let WebContent
+const feedUrl = `http://www.rellal.com:8181/${process.platform}`;
+function sendUpdateMessage(message, data) {
+  WebContent.send("message", { message, data });
+
+   /*   dialog.showMessageBox({
+        type: 'info',
+        title: '版本',
+        message: message,
+        detail: data,
+    })*/
+}
+// 检查更新
+function checkForUpdates() {
+      sendUpdateMessage("start", '检测更新');
+  // 设置更新服务器的地址, 其实就是一个静态文件服务器地址
+  autoUpdater.setFeedURL(feedUrl);
+
+  autoUpdater.on("error", function(message) {
+    sendUpdateMessage("error", message);
+  });
+  autoUpdater.on("checking-for-update", function(message) {
+    sendUpdateMessage("checking-for-update", message);
+  });
+  autoUpdater.on("update-available", function(message) {
+    sendUpdateMessage("update-available", message);
+  });
+  autoUpdater.on("update-not-available", function(message) {
+    sendUpdateMessage("update-not-available", message);
+  });
+
+  // 更新下载进度事件
+  autoUpdater.on("download-progress", function(progressObj) {
+    sendUpdateMessage("downloadProgress", progressObj);
+  });
+  // 下载完成事件
+  autoUpdater.on("update-downloaded", function(
+    event,
+    releaseNotes,
+    releaseName,
+    releaseDate,
+    updateUrl,
+    quitAndUpdate
+  ) {
+    ipcMain.on("updateNow", (e, arg) => {
+      // 停止当前程序并安装
+      autoUpdater.quitAndInstall();
+    });
+    sendUpdateMessage("isUpdateNow", null);
+  });
+  // 执行检查更新
+  autoUpdater.checkForUpdates();
+}
+
 /*开启aira2*/
 function startengine() {
     console.log(process)
@@ -60,7 +116,7 @@ async function createWindow() {
     const win = new BrowserWindow({
         width: 1600,
         height: 1200,
-        frame: false,
+        frame: true,
         webPreferences: {
             // Use pluginOptions.nodeIntegration, leave this alone
             // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
@@ -69,6 +125,7 @@ async function createWindow() {
             enabkeRemoteModule: true,
         }
     })
+    WebContent = win.webContents;
     ipcMain.on('window-min', function() {
         win.minimize();
     })
@@ -113,6 +170,8 @@ app.on('ready', async () => {
       }*/
     startengine();
     createWindow();
+    setTimeout(checkForUpdates, 1000);
+  /*  autoupdate();*/
 })
 // Exit cleanly on request from parent process in development mode.
 if (isDevelopment) {
@@ -154,3 +213,43 @@ ipcMain.handle("selectpath", async (event, arg) => {
     })
     return path;
 });
+
+
+function autoupdate() {
+    dialog.showMessageBox({
+        type: 'info',
+        title: '版本',
+        message: app.getVersion(),
+        detail: app.getVersion(),
+    })
+    if (process.env.NODE_ENV != 'development') {
+        const server = 'http://www.rellal.com:1377';
+        const url = `${server}/update/${process.platform}/${app.getVersion()}`
+
+        autoUpdater.setFeedURL({ url })
+
+        autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
+            const dialogOpts = {
+                type: 'info',
+                buttons: ['Restart', 'Later'],
+                title: 'Application Update',
+                message: process.platform === 'win32' ? releaseNotes : releaseName,
+                detail: 'A new version has been downloaded. Restart the application to apply the updates.'
+            }
+
+            dialog.showMessageBox(dialogOpts).then((returnValue) => {
+                if (returnValue.response === 0) autoUpdater.quitAndInstall()
+            })
+        })
+        autoUpdater.on('error', message => {
+            console.error('There was a problem updating the application')
+            console.error(message)
+            dialog.showMessageBox({
+                type: 'info',
+                title: '版本',
+                message: 'There was a problem updating the applicatio',
+                detail: message,
+            })
+        })
+    }
+}

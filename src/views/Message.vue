@@ -372,6 +372,21 @@ export default {
     max-height: 400px;
     overflow: auto;
     position: relative;
+        &::-webkit-scrollbar-track-piece {
+      background: #EEEEEE;
+      border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #999999;
+      border-radius: 4px;
+    }
+
 }
 
 .task:nth-of-type(1) {}
