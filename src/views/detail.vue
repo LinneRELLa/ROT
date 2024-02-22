@@ -1,6 +1,7 @@
 <template>
     <div id="hello">
         <div id="newTask" v-if="fileName!=undefined" class="toollip">
+            <div style="text-align: right;align-self: stretch;margin-bottom: 8px"><i  class="el-icon-close" @click="back" style="cursor: pointer;"></i></div>
             <textarea v-model="fileName" class="textarea" rows="8" disabled></textarea>
             <p style="font-size: 10px;">下载到:</p>
             <div class="outin"><input class="input" v-model="path" placeholder="下载目录（默认为当前目录下Download文件夹）">
@@ -84,7 +85,7 @@ export default {
         },
         down(key, page) {
             this.nodes = { ROREL: [{ t: '正在加载' }] };
-            download(key, page).then((res, rea) => {
+            download(key, page,this.$store.state.proxy).then((res, rea) => {
 
 
                 this.response = res.data;
@@ -236,15 +237,17 @@ span:hover {
     top: 50%;
     transform: translate(-50%, -50%);
     width: 500px;
- 
+    margin: 2px;
     background: rgba(48,56,65, 1);
     z-index: 4;
     border-radius: 3px;
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-around;
     align-items: flex-start;
-    padding:  30px;
+    padding:  2px 32px;
     flex-direction: column;
+    border-radius: 4px;
+    height: 350px;
 }
 
 .title {

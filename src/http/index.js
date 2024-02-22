@@ -11,27 +11,29 @@ if (process.env.NODE_ENV == 'development') {
     publicpath = path.join(__dirname, '../../config/httppath.json')
 }
 
-let res=JSON.parse(fs.readFileSync(publicpath, 'utf-8'));
-console.log(res,'res');
-const http=axios.create({
-	baseURL:res.base,
-   timeout:0,
-   method:'post'
+
+
+
+let res = JSON.parse(fs.readFileSync(publicpath, 'utf-8'));
+console.log(res, 'res');
+const http = axios.create({
+    baseURL: res.base,
+    timeout: 0,
+    method: 'post'
 
 })
 
-const downurl=axios.create({
-  baseURL:res.proxy,
-   timeout:0,
-   method:'get'
+const downurl = axios.create({
+    timeout: 0,
+    method: 'get'
 
 })
 
 
-const addurl=axios.create({
-baseURL:'http://127.0.0.1:6800/jsonrpc',
-   timeout:0,
-   method:'post'
+const addurl = axios.create({
+    baseURL: 'http://127.0.0.1:6800/jsonrpc',
+    timeout: 0,
+    method: 'post'
 })
 
 /*http.interceptors.request.use(config => {
@@ -41,7 +43,7 @@ baseURL:'http://127.0.0.1:6800/jsonrpc',
   if(url=='ac'){
 
 
-  	config.headers.Token=token
+    config.headers.Token=token
   }
   return config;
 },);
@@ -53,7 +55,7 @@ config.headers.axios=true;
   return config;
     }
 
-	)*/
+  )*/
 
 
 
@@ -61,50 +63,69 @@ config.headers.axios=true;
 
 
 
-const normal=(data)=>{return http({
-	url:'/api/iniInfo',
-  data,
-})}  
-
-const back=(data)=>{return http({
-  url:'/api/backups',
-  data,
-})}  
-
-const download=(key,page)=>{
-  console.log(`/page/${page}.xml?term=${key}`);
-  return downurl({
-   url:`/page/${page}.xml?term=${key}`
-
-  })
+const normal = (data) => {
+    return http({
+        url: '/api/iniInfo',
+        data,
+    })
 }
-const add=(key='',url='',path)=>{
-  console.log(JSON.stringify(
-    {'jsonrpc':'2.0', 
-    'method':'aria2.addUri', 
-    'params':[[url],{
-    'dir':path?path:`../Download/${key}`,}],
-  'id':'add',
-  },
-   
+
+const back = (data) => {
+    return http({
+        url: '/api/backups',
+        data,
+    })
+}
+
+const download = (key, page, proxy) => {
+    console.log(`/page/${page}.xml?term=${key}`);
+    if (!proxy) {
+        return downurl({
+            url: `${res.proxy}/page/${page}.xml?term=${key}`
+
+        })
+    } else {
+        return downurl({
+            url: `${res.source}/page/${page}.xml?term=${key}`
+
+        })
+    }
+
+
+}
+const add = (key = '', url = '', path) => {
+    console.log(JSON.stringify({
+            'jsonrpc': '2.0',
+            'method': 'aria2.addUri',
+            'params': [
+                [url], {
+                    'dir': path ? path : `../Download/${key}`,
+                }
+            ],
+            'id': 'add',
+        },
+
 
     ))
- return addurl({
-   data:JSON.stringify(
-    {'jsonrpc':'2.0', 
-    'method':'aria2.addUri', 
-    'params':[[url],{
-    'dir':path?path:`../Download/${key}`,}],
-    
-    'id':'add',
-  },
-   
+    return addurl({
+        data: JSON.stringify({
+                'jsonrpc': '2.0',
+                'method': 'aria2.addUri',
+                'params': [
+                    [url], {
+                        'dir': path ? path : `../Download/${key}`,
+                    }
+                ],
 
-    ),
-     
+                'id': 'add',
+            },
 
-})
+
+        ),
+
+
+    })
 
 }
 
-export {normal,download,add,back}
+export { normal, download, add, back }

@@ -100,12 +100,7 @@ export default {
     },
     name: 'iniInfo',
     created() {
-
-
         this.load()();
-
-
-
     },
     computed: {
 

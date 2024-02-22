@@ -1,5 +1,5 @@
 'use strict'
-import { app, protocol, BrowserWindow }  from 'electron'
+import { app, protocol, BrowserWindow } from 'electron'
 import { autoUpdater } from "electron-updater";
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
@@ -12,56 +12,57 @@ const store = new Store();
 /*自动更新*/
 let WebContent
 const feedUrl = `http://www.rellal.com:8181/${process.platform}`;
-function sendUpdateMessage(message, data) {
-  WebContent.send("message", { message, data });
 
-   /*   dialog.showMessageBox({
-        type: 'info',
-        title: '版本',
-        message: message,
-        detail: data,
-    })*/
+function sendUpdateMessage(message, data) {
+    WebContent.send("message", { message, data });
+
+    /*   dialog.showMessageBox({
+         type: 'info',
+         title: '版本',
+         message: message,
+         detail: data,
+     })*/
 }
 // 检查更新
 function checkForUpdates() {
-  sendUpdateMessage("当前版本:", app.getVersion());
-  // 设置更新服务器的地址, 其实就是一个静态文件服务器地址
-  autoUpdater.setFeedURL(feedUrl);
+    sendUpdateMessage("当前版本:", app.getVersion());
+    // 设置更新服务器的地址, 其实就是一个静态文件服务器地址
+    autoUpdater.setFeedURL(feedUrl);
 
-  autoUpdater.on("error", function(message) {
-    sendUpdateMessage("error", message);
-  });
-  autoUpdater.on("checking-for-update", function(message) {
-    sendUpdateMessage("checking-for-update", message);
-  });
-  autoUpdater.on("update-available", function(message) {
-    sendUpdateMessage("update-available", message);
-  });
-  autoUpdater.on("update-not-available", function(message) {
-    sendUpdateMessage("update-not-available", message);
-  });
-
-  // 更新下载进度事件
-  autoUpdater.on("download-progress", function(progressObj) {
-    sendUpdateMessage("downloadProgress", progressObj);
-  });
-  // 下载完成事件
-  autoUpdater.on("update-downloaded", function(
-    event,
-    releaseNotes,
-    releaseName,
-    releaseDate,
-    updateUrl,
-    quitAndUpdate
-  ) {
-    ipcMain.on("updateNow", (e, arg) => {
-      // 停止当前程序并安装
-      autoUpdater.quitAndInstall();
+    autoUpdater.on("error", function(message) {
+        sendUpdateMessage("error", message);
     });
-    sendUpdateMessage("isUpdateNow", null);
-  });
-  // 执行检查更新
-  autoUpdater.checkForUpdates();
+    autoUpdater.on("checking-for-update", function(message) {
+        sendUpdateMessage("checking-for-update", message);
+    });
+    autoUpdater.on("update-available", function(message) {
+        sendUpdateMessage("update-available", message);
+    });
+    autoUpdater.on("update-not-available", function(message) {
+        sendUpdateMessage("update-not-available", message);
+    });
+
+    // 更新下载进度事件
+    autoUpdater.on("download-progress", function(progressObj) {
+        sendUpdateMessage("downloadProgress", progressObj);
+    });
+    // 下载完成事件
+    autoUpdater.on("update-downloaded", function(
+        event,
+        releaseNotes,
+        releaseName,
+        releaseDate,
+        updateUrl,
+        quitAndUpdate
+    ) {
+        ipcMain.on("updateNow", (e, arg) => {
+            // 停止当前程序并安装
+            autoUpdater.quitAndInstall();
+        });
+        sendUpdateMessage("isUpdateNow", null);
+    });
+    // 执行检查更新
+    autoUpdater.checkForUpdates();
 }
 
 /*开启aira2*/
@@ -122,8 +123,25 @@ async function createWindow() {
             // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
             nodeIntegration: true,
             contextIsolation: false,
+            webSecurity: false,
             enabkeRemoteModule: true,
         }
+    })
+    // 设置代理
+    ipcMain.on('set_proxy', (event, arg) => {
+        console.log(arg);
+        var { proxy } = arg
+        win.webContents.session.setProxy({
+            proxyRules: proxy
+        }, function() {
+            console.log('代理设置完毕')
+        });
+    })
+
+    // 去掉代理
+    ipcMain.on('remove_proxy', (event, arg) => {
+        win.webContents.session.setProxy({});
+        console.log('取消代理')
     })
     WebContent = win.webContents;
     ipcMain.on('window-min', function() {
@@ -133,6 +151,8 @@ async function createWindow() {
         await killtask('aria2c.exe')
         app.quit();
     })
+
+
     if (process.env.WEBPACK_DEV_SERVER_URL) {
         // Load the url of the dev server if in development mode
         await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
@@ -171,7 +191,7 @@ app.on('ready', async () => {
     startengine();
     createWindow();
     setTimeout(checkForUpdates, 1000);
-  /*  autoupdate();*/
+    /*  autoupdate();*/
 })
 // Exit cleanly on request from parent process in development mode.
 if (isDevelopment) {

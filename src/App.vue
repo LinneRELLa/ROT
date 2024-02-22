@@ -15,6 +15,7 @@
                 <router-link to="/home" active-class="active-icon" class="link">首页</router-link>
                 <router-link to="/Message" active-class="active-icon" class="link">下载详情</router-link>
                 <router-link to="/detail" active-class="active-icon" class="link" v-show="this.$route.name=='detail'">番剧详情</router-link>
+                <router-link to="/option" active-class="active-icon" class="link">设置</router-link>
             </div>
             <div class="cont"></div>
             <router-view />
