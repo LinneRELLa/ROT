@@ -3,7 +3,7 @@
         <div id="title">
             {{this.$route.query.id}}
             <br>
-            {{this.$route.query.Name}}
+            {{this.$route.query?.Name}}
         </div>
         <div ref="main" style="width: 1200px;height: 500px;"></div>
         <div class="files">
@@ -98,8 +98,8 @@ export default {
                             vc.files.push({ name: y, process: p })
                         }
                     }
-                    vc.option.series[0].data.shift();
-                    vc.option.series[0].data.push(res.result.downloadSpeed / 1024);
+                    vc.option?.series[0].data.shift();
+                    vc.option.series[0]?.data.push(res.result.downloadSpeed / 1024);
                     vc.myChart.setOption(vc.option);
                 }
                 if (res.id && res.id.match(/^GetPeers.*/)) {

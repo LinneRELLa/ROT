@@ -190,7 +190,6 @@ app.on('ready', async () => {
       }*/
     startengine();
     createWindow();
-    setTimeout(checkForUpdates, 1000);
     /*  autoupdate();*/
 })
 // Exit cleanly on request from parent process in development mode.

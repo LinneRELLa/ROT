@@ -1,11 +1,11 @@
 <template>
     <div id="hello">
         <div id="newTask" v-if="fileName!=undefined" class="toollip">
-            <div style="text-align: right;align-self: stretch;margin-bottom: 8px"><i  class="el-icon-close" @click="back" style="cursor: pointer;"></i></div>
+            <div style="text-align: right;align-self: stretch;margin-bottom: 8px"><i class="el-icon-close" @click="back" style="cursor: pointer;"></i></div>
             <textarea v-model="fileName" class="textarea" rows="8" disabled></textarea>
             <p style="font-size: 10px;">下载到:</p>
             <div class="outin"><input class="input" v-model="path" placeholder="下载目录（默认为当前目录下Download文件夹）">
-                <el-button  icon="el-icon-folder-opened" @click="openFile"></el-button>
+                <el-button icon="el-icon-folder-opened" @click="openFile"></el-button>
             </div>
             <div :class="Rdnd" @click='Post'>立即下载</div>
         </div>
@@ -18,7 +18,12 @@
         </div>
         <div class="nodec">最近下载:{{this.last}}</div>
         <div v-for="(x,k) of nodes" class="nodec"> <span v-html="k" />
-            <div v-for="i of x" class="node"><span v-html="i.t" /><button @click="openPop($route.query.key,i.b,i.t)" v-if="(i.t!='暂无结果')&&i.t!='正在加载'"><i class="el-icon-download" /></i></button></div>
+            <div v-for="i of x" class="node"><span v-html="i.t" />
+                <div style="display: flex;align-items: center;">
+                          <button @click="copy($route.query.key,i.b,i.t)" v-if="(i.t!='暂无结果')&&i.t!='正在加载'" ><i class="el-icon-copy-document" /></i></button>
+                <button @click="openPop($route.query.key,i.b,i.t)" v-if="(i.t!='暂无结果')&&i.t!='正在加载'"><i class="el-icon-download" /></i></button> 
+                </div>
+         </div>
         </div>
     </div>
 </template>
@@ -35,6 +40,11 @@ export default {
             this.last = m;
         });
 
+            this.$electron.ipcRenderer.invoke('getstore', 'path').then((m) => {
+                console.log(m, 'm');
+                this.path = m;
+            });
+
     },
     computed: {
         Rdnd() {
@@ -50,6 +60,10 @@ export default {
             this.key = key;
             this.url = url;
             this.des = des;
+        },
+        async copy(key, url, des){
+         await navigator.clipboard.writeText(url);
+          window.alert('复制成功');
         },
         openFile() {
             this.$electron.ipcRenderer.invoke('selectpath', this.$route.query.key).then((m) => {
@@ -75,6 +89,9 @@ export default {
                 }
             })
             add(key, url, path);
+         /*   if(path){
+              this.$electron.ipcRenderer.send('setstore', { key:'path', path });  
+            }*/
             this.$electron.ipcRenderer.send('setstore', { key, des });
             this.$electron.ipcRenderer.invoke('getstore', key).then((m) => {
                 console.log(m, 'm');
@@ -85,7 +102,7 @@ export default {
         },
         down(key, page) {
             this.nodes = { ROREL: [{ t: '正在加载' }] };
-            download(key, page,this.$store.state.proxy).then((res, rea) => {
+            download(key, page, this.$store.state.proxy).then((res, rea) => {
 
 
                 this.response = res.data;
@@ -102,7 +119,14 @@ export default {
                 const d = x.replace(/(.|\n)*?<description>((.|\n)*?)<\/description>(.|\n)*/gm, '$2');
 
                 const l = x.replace(/(.|\n)*?<enclosure url="((.|\n)*?)"(.|\n)*\/>(.|\n)*/gm, '$2');
-                const b = l.replace(/acg.rip/, 'tv.rellal.com:9099/acg')
+                let b;
+                if (!this.$store.state.proxy) {
+                    b = l.replace(/acg.rip/, 'tv.rellal.com:9099/acg')
+                } else {
+                    b = l;
+                }
+
+
                 pag.push({ t, d, b })
 
 
@@ -185,7 +209,7 @@ span:hover {
 
 .node {
     font-size: 18px;
-
+   
     &:hover {
         background: rgba(199, 199, 210, 0.3);
 
@@ -193,6 +217,7 @@ span:hover {
 
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 100%;
     text-align: left;
     padding: 0 40px;
@@ -201,6 +226,7 @@ span:hover {
 .nodec {
     display: flex;
     justify-content: column;
+    align-items: center;
     width: 100%;
 
 }
@@ -238,13 +264,13 @@ span:hover {
     transform: translate(-50%, -50%);
     width: 500px;
     margin: 2px;
-    background: rgba(48,56,65, 1);
+    background: rgba(48, 56, 65, 1);
     z-index: 4;
     border-radius: 3px;
     display: flex;
     justify-content: space-around;
     align-items: flex-start;
-    padding:  2px 32px;
+    padding: 2px 32px;
     flex-direction: column;
     border-radius: 4px;
     height: 350px;
@@ -351,7 +377,7 @@ span:hover {
     padding: 0 20px;
     color: white;
 
- 
+
 }
 
 .textarea {
@@ -379,10 +405,11 @@ input:focus {
     width: 100%;
     display: flex;
     margin: 0;
-    .el-button{
-      background: rgba(48, 56, 66, 1.0);
-      border-radius: 0 3px 3px 0;
-      border-left: none;
+
+    .el-button {
+        background: rgba(48, 56, 66, 1.0);
+        border-radius: 0 3px 3px 0;
+        border-left: none;
     }
 
 }
@@ -398,7 +425,7 @@ input:focus {
 }*/
 
 .Rdnd {
-    
+
     width: 100%;
     text-align: center;
     cursor: pointer;
@@ -414,7 +441,7 @@ input:focus {
     text-align: center;
     cursor: pointer;
     background: rgb(38, 112, 234);
-     font-size: 16px;
+    font-size: 16px;
     margin: 20px 0;
     color: white;
 }

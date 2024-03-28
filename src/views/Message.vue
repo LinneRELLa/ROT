@@ -40,10 +40,10 @@
                     <div class="task">
                         <!--   <div >GID:{{x.gid}}</div> -->
                         <div class="title">
-                            {{x.bittorrent.info?x.bittorrent.info.name:'种子下载中'}}
+                            {{x?.bittorrent?.info?.name||'种子下载中'}}
                             <div class="content">
                                 <div>{{completed(x)}}</div>
-                                <div>{{x.downloadSpeed/1024}}kb/s</div>
+                                <div>{{x?.downloadSpeed/1024}}kb/s</div>
                             </div>
                         </div>
                         <Process :percent="percent(x)" />
