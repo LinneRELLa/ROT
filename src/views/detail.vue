@@ -89,9 +89,9 @@ export default {
                 }
             })
             add(key, url, path);
-         /*   if(path){
-              this.$electron.ipcRenderer.send('setstore', { key:'path', path });  
-            }*/
+            if(path){
+              this.$electron.ipcRenderer.send('setstore', { key:'path', des:path });  
+            }
             this.$electron.ipcRenderer.send('setstore', { key, des });
             this.$electron.ipcRenderer.invoke('getstore', key).then((m) => {
                 console.log(m, 'm');
