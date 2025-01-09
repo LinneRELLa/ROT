@@ -2,9 +2,13 @@
     <div id="bkg">
         <div id="MessageLeft">
             <div id="confirm" v-if="todel" class="toollip">
-                确认删除?
-                <el-button type="success" icon="el-icon-check" circle @click="del()"></el-button>
-                <el-button type="danger" icon="el-icon-delete" circle @click="Todel()"></el-button>
+                <div  style="display:flex;flex-direction: column;justify-content: center;align-items: center;width: 100%;height: 100%;">
+                <span style="font-size:22px">确认删除?</span>
+                <span>
+                <el-button type="success" icon="el-icon-check" circle @click="del()" style="margin: 20px;"></el-button>
+                <el-button type="danger" icon="el-icon-delete" circle @click="Todel()" style="margin: 20px;"></el-button>
+                </span>
+               </div>
             </div>
             <div id="newTask" v-if="newTask!=null" class="toollip">
                 <div style="font-weight: 400;width: 100%;text-align: center;margin: 20px 0;">添加链接或口令</div>
@@ -112,6 +116,7 @@
 </template>
 <script>
 const { ipcRenderer, remote } = window.require('electron');
+import { add } from "../http"
 const fs = window.require('fs');
 /*const iconv = require('iconv-lite');*/
 /*const kill=window.require('tree-kill');*/
@@ -214,7 +219,7 @@ export default {
     },
     computed: {
         Rdnd() {
-            return this.newTask.match(/^magnet:\?xt=urn:btih:[0-9a-fA-F]{40,}.*$/) ? 'Rdnd-active' : 'Rdnd'
+            return 'Rdnd-active'
         }
     },
     methods: {
@@ -260,7 +265,9 @@ export default {
                     'id': `Rdnd${this.count++}`,
                     'method': 'aria2.addUri',
                     'params': [
-                        [this.newTask]
+                        [this.newTask], {
+                            'dir': this.path ? this.path : `../Download`,
+                        }
                     ]
                 }))
                 this.newTask = null;
@@ -372,19 +379,20 @@ export default {
     max-height: 400px;
     overflow: auto;
     position: relative;
-        &::-webkit-scrollbar-track-piece {
-      background: #EEEEEE;
-      border-radius: 4px;
+
+    &::-webkit-scrollbar-track-piece {
+        background: #EEEEEE;
+        border-radius: 4px;
     }
 
     &::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
+        width: 8px;
+        height: 8px;
     }
 
     &::-webkit-scrollbar-thumb {
-      background: #999999;
-      border-radius: 4px;
+        background: #999999;
+        border-radius: 4px;
     }
 
 }
@@ -413,7 +421,7 @@ export default {
     transform: translate(-50%, -50%);
     width: 500px;
     height: 413px;
-    background: rgba(255, 255, 255, 1);
+    background: rgba(48, 56, 65, 1);
     z-index: 4;
     border-radius: 3px;
     display: flex;
@@ -522,12 +530,16 @@ export default {
     height: 36px;
     padding-left: 20px;
     padding-right: 20px;
+    background: rgb(105, 111, 117);
+    color: white;
 }
 
 .textarea {
-    width: 100%;
+    width: calc(100% - 8px);
     border: 1px solid rgb(230, 230, 230);
     border-radius: 3px;
+    color: white;
+    background: rgb(105, 111, 117);
 }
 
 .textarea:focus-visible {
@@ -547,6 +559,14 @@ input:focus {
 .outin {
     width: 100%;
     display: flex;
+    margin: 0;
+
+    .el-button {
+        background: rgba(48, 56, 66, 1.0);
+        border-radius: 0 3px 3px 0;
+        border-left: none;
+    }
+
 }
 
 /*.outin::before {
@@ -578,7 +598,7 @@ input:focus {
     background: rgb(38, 112, 234);
     line-height: 44px;
     margin: 20px 0;
-    color: white;
+    color: black;
 }
 
 #dnd {

@@ -385,6 +385,7 @@ span:hover {
     border: 1px solid rgb(230, 230, 230);
     border-radius: 3px;
     color: white;
+
 }
 
 .textarea:focus-visible {
